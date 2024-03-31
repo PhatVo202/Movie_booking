@@ -1,0 +1,56 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+.header__content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 10;
+  background-image: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.9),
+    rgba(0, 0, 0, 0)
+  );
+}
+
+#collapsibleNavId .navbar-nav {
+  list-style: none;
+}
+
+#collapsibleNavId .nav-item {
+  padding: 0 10px;
+}
+
+#collapsibleNavId .nav-item .nav-link {
+  text-decoration: none;
+  font-size: 1.1rem;
+  line-height: 22px;
+  text-align: center;
+  color: hsla(0, 0%, 100%, 0.6);
+}
+
+#collapsibleNavId .nav-item .nav-link:hover {
+  transition: all 0.5s ease-in-out;
+  color: #fff;
+}
+
+.btn__register {
+  margin: 0 20px;
+}
+
+.navbar-light .navbar-toggler {
+  color: hsla(0, 0%, 100%, 0.6);
+  border-color: transparent;
+  background-color: hsla(0, 0%, 100%, 0.6);
+  border: 0.0625rem solid rgba(0, 0, 0, 0);
+  border-radius: 0.25rem;
+}

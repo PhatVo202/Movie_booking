@@ -1,0 +1,1 @@
+export const SET_REGISTER_INFO = "SET_REGISTER_INFO";

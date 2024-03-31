@@ -1,0 +1,14 @@
+.width__item {
+  width: 100% !important;
+}
+
+.slick-slider .slick-next,
+.slick-slider .slick-prev {
+  width: 40px;
+  z-index: 100;
+}
+
+.slick-slider .slick-prev:before,
+.slick-slider .slick-next:before {
+  font-size: 40px;
+}

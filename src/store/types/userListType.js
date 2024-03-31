@@ -1,0 +1,1 @@
+export const SET_USER_LIST_TYPE = "SET_USER_LIST_TYPE";
