@@ -35,21 +35,31 @@ export default function Login() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    try {
+      const result = await loginApi(state);
 
-    const result = await loginApi(state);
-
-    localStorage.setItem("USER_INFO_KEY", JSON.stringify(result.data));
-    dispatch(setUserInfoAction(result.data));
-    if (userState.userInfo) {
+      localStorage.setItem("USER_INFO_KEY", JSON.stringify(result.data));
+      dispatch(setUserInfoAction(result.data));
+      if (userState.userInfo) {
+        Swal.fire({
+          title: "Đăng nhập thành công",
+          text: `Xin chào ${userState.userInfo.hoTen}`,
+          icon: "success",
+          timer: 2000,
+          showConfirmButton: false,
+        });
+      }
+      navigate("/");
+    } catch (error) {
       Swal.fire({
-        title: "Đăng nhập thành công",
-        text: `Xin chào ${userState.userInfo.hoTen}`,
-        icon: "success",
+        title: `${error.response.data}`,
+        icon: "error",
         timer: 2000,
         showConfirmButton: false,
       });
+
+      console.log(error.response.data);
     }
-    navigate("/");
   };
 
   return (

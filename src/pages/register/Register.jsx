@@ -4,7 +4,7 @@ import { registerApi } from "services/user";
 
 import { CloseOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
-import { Space } from "antd";
+import { notification, Space } from "antd";
 import { setRegisterInfoAction } from "store/actions/registerAction";
 import { MA_NHOM } from "constants";
 
@@ -69,24 +69,29 @@ export default function Register() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
-    const result = await registerApi(values);
-    localStorage.setItem(
-      "REGISTER_INFO_KEY",
-      JSON.stringify(result.data.content)
-    );
-    dispatch(setRegisterInfoAction(result.data.content));
-    if (registerUserState.nd) {
-      Swal.fire({
-        title: "Đăng ký thành công",
-        text: "Xin chào!!",
-        icon: "success",
-        timer: 2000,
-        showConfirmButton: false,
+    try {
+      const result = await registerApi(values);
+      localStorage.setItem(
+        "REGISTER_INFO_KEY",
+        JSON.stringify(result.data.content)
+      );
+      dispatch(setRegisterInfoAction(result.data.content));
+      if (registerUserState.nd) {
+        Swal.fire({
+          title: "Đăng ký thành công",
+          text: "Xin chào!!",
+          icon: "success",
+          timer: 2000,
+          showConfirmButton: false,
+        });
+      }
+      navigate("/login");
+    } catch (error) {
+      notification.error({
+        message: "Error",
+        description: `${error.response.data}`,
       });
     }
-
-    navigate("/login");
   };
 
   return (

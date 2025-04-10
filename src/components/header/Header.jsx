@@ -89,7 +89,7 @@ export default function Header() {
                 </NavLink>
               </li>
               <li className="nav-item ">
-                <NavLink to="/" className="nav-link">
+                <NavLink to="#lichchieu" className="nav-link">
                   Lịch chiếu
                 </NavLink>
               </li>

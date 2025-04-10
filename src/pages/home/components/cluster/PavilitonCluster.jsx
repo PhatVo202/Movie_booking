@@ -42,8 +42,11 @@ export default function PavilitonCluster() {
     overflowY: "scroll",
   };
 
+  console.log({ getSystemCluster: systemCluster });
+  console.log({ getInforCluster: inforCluster });
+
   return (
-    <div className={isMobile ? "container-md" : "container"}>
+    <div id="lichchieu" className={isMobile ? "container-md" : "container"}>
       <div>
         <Tabs
           tabPosition={isMobile ? "top" : "left"}

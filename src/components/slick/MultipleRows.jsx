@@ -53,6 +53,7 @@ export default function MultipleRows() {
 
   const navigate = useNavigate();
   const movieList = useMovieList();
+  console.log({ movieList: movieList });
   const renderMovieList = () => {
     return movieList.map((ele, index) => {
       return (
