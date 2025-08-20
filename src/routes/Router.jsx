@@ -1,24 +1,28 @@
-import React from "react";
-
+import React, { lazy, Suspense } from "react";
 import { useRoutes } from "react-router-dom";
-import AdminGuard from "../guards/AdminGuard";
 import AuthGuard from "../guards/AuthGuard";
 import NoAuthGuard from "../guards/NoAuthGuard";
-import { AdminLayout } from "layouts/admin/AdminLayout";
-import HomeLayout from "layouts/home/HomeLayout";
-import Booking from "pages/booking/Booking";
-import HomePage from "pages/home/HomePage";
-import Login from "pages/login/Login";
-import MovieDetail from "pages/movie-detail/MovieDetail";
-import MovieManagement from "pages/movie-management/MovieManagement";
-import Register from "pages/register/Register";
-import MovieForm from "pages/movie-form/MovieForm";
-import MovieShowTime from "pages/movie-showtime/MovieShowTime";
-import Profile from "pages/profile/Profile";
-import UserList from "pages/userlist/UserList";
-import UserForm from "pages/use-form/UserForm";
-import EditFormUser from "pages/editformuser/EditFormUser";
-import NotFound from "pages/notfound/NotFound";
+
+const AdminGuard = lazy(() => import("../guards/AdminGuard"));
+
+const AdminLayout = lazy(() => import("layouts/admin/AdminLayout"));
+const HomeLayout = lazy(() => import("layouts/home/HomeLayout"));
+
+const EditFormUser = lazy(() => import("pages/editformuser/EditFormUser"));
+const UserForm = lazy(() => import("pages/use-form/UserForm"));
+const UserList = lazy(() => import("pages/userlist/UserList"));
+const Profile = lazy(() => import("pages/profile/Profile"));
+const MovieShowTime = lazy(() => import("pages/movie-showtime/MovieShowTime"));
+const MovieManagement = lazy(() =>
+  import("pages/movie-management/MovieManagement")
+);
+const MovieForm = lazy(() => import("pages/movie-form/MovieForm"));
+const Login = lazy(() => import("pages/login/Login"));
+const Register = lazy(() => import("pages/register/Register"));
+const MovieDetail = lazy(() => import("pages/movie-detail/MovieDetail"));
+const Booking = lazy(() => import("pages/booking/Booking"));
+const HomePage = lazy(() => import("pages/home/HomePage"));
+const NotFound = lazy(() => import("pages/notfound/NotFound"));
 
 export default function Router() {
   const routing = useRoutes([
@@ -28,11 +32,19 @@ export default function Router() {
       children: [
         {
           path: "/",
-          element: <HomePage />,
+          element: (
+            <Suspense>
+              <HomePage />
+            </Suspense>
+          ),
         },
         {
           path: "/movie-detail/:id", // id: mã phim
-          element: <MovieDetail />,
+          element: (
+            <Suspense>
+              <MovieDetail />
+            </Suspense>
+          ),
         },
         {
           path: "/",
@@ -40,13 +52,21 @@ export default function Router() {
           children: [
             {
               path: "/booking/:id", // id: mã lịch chiếu
-              element: <Booking />,
+              element: (
+                <Suspense>
+                  <Booking />
+                </Suspense>
+              ),
             },
           ],
         },
         {
           path: "/profile",
-          element: <Profile />,
+          element: (
+            <Suspense>
+              <Profile />
+            </Suspense>
+          ),
         },
         {
           path: "/",
@@ -54,7 +74,11 @@ export default function Router() {
           children: [
             {
               path: "/login",
-              element: <Login />,
+              element: (
+                <Suspense>
+                  <Login />
+                </Suspense>
+              ),
             },
           ],
         },
@@ -64,7 +88,11 @@ export default function Router() {
           children: [
             {
               path: "/register",
-              element: <Register />,
+              element: (
+                <Suspense>
+                  <Register />
+                </Suspense>
+              ),
             },
           ],
         },
@@ -76,35 +104,67 @@ export default function Router() {
       children: [
         {
           path: "/admin",
-          element: <AdminGuard />,
+          element: (
+            <Suspense>
+              <AdminGuard />
+            </Suspense>
+          ),
           children: [
             {
               path: "/admin/userlist",
-              element: <UserList />,
+              element: (
+                <Suspense>
+                  <UserList />
+                </Suspense>
+              ),
             },
             {
               path: "/admin/adduser",
-              element: <UserForm />,
+              element: (
+                <Suspense>
+                  <UserForm />
+                </Suspense>
+              ),
             },
             {
               path: "/admin/edituser",
-              element: <EditFormUser />,
+              element: (
+                <Suspense>
+                  <EditFormUser />
+                </Suspense>
+              ),
             },
             {
               path: "/admin/films",
-              element: <MovieManagement />,
+              element: (
+                <Suspense>
+                  <MovieManagement />
+                </Suspense>
+              ),
             },
             {
               path: "/admin/films/addnew",
-              element: <MovieForm />,
+              element: (
+                <Suspense>
+                  <MovieForm />
+                </Suspense>
+              ),
             },
             {
               path: "/admin/films/edit/:id",
-              element: <MovieForm />,
+              element: (
+                <Suspense>
+                  <MovieForm />
+                </Suspense>
+              ),
             },
             {
               path: "/admin/films/showtime/:id",
-              element: <MovieShowTime />,
+              element: (
+                <Suspense>
+                  <MovieShowTime />
+                </Suspense>
+              ),
             },
           ],
         },
@@ -112,7 +172,11 @@ export default function Router() {
     },
     {
       path: "*",
-      element: <NotFound />,
+      element: (
+        <Suspense>
+          <NotFound />
+        </Suspense>
+      ),
     },
   ]);
 

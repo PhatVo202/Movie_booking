@@ -1,6 +1,5 @@
 import React from "react";
 import { Space } from "antd";
-
 import { CloseOutlined } from "@ant-design/icons";
 import { useMediaQuery } from "react-responsive";
 import { useMovieList } from "hooks/useMovieList";
@@ -8,22 +7,22 @@ import { useMovieList } from "hooks/useMovieList";
 const contentStyle = {
   width: "100%",
   height: "665px",
-  objectFit: "cover",
+  objectFit: "contain",
 };
 
 export default function CarouselMovies() {
   const movieList = useMovieList();
-  console.log(movieList);
+  console.log({ movieList: movieList });
 
   const renderBannerList = () => {
-    return movieList.slice(0, 4).map((item, index) => {
+    return movieList.slice(4, 8).map((item, index) => {
       return (
         <div
           key={index}
           className={`carousel-item ${index === 0 && "active"}`}
           style={
             isMobile
-              ? { height: "400px", width: "100%", objectFit: "cover" }
+              ? { height: "400px", width: "100%", objectFit: "contain" }
               : contentStyle
           }
         >
@@ -74,7 +73,7 @@ export default function CarouselMovies() {
                 <iframe
                   width="560"
                   height="315"
-                  src="https://www.youtube.com/embed/uqJ9u7GSaYM?controls=0"
+                  src={item.trailer}
                   title="YouTube video player"
                   frameborder="0"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -91,15 +90,6 @@ export default function CarouselMovies() {
   const isMobile = useMediaQuery({ query: `(max-width: 600px)` });
 
   return (
-    // <Carousel
-    //   style={{ position: "relative", width: "100%", overflow: "hidden" }}
-    //   afterChange={onChange}
-    //   dotPosition="bottom"
-    //   autoplay={true}
-    // >
-    //   {renderBannerList()}
-    // </Carousel>
-
     <div>
       <div
         id="carouselExampleIndicators"

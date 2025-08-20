@@ -3,4 +3,4 @@ export const TOKEN_CYBERSOFT =
 // export const BASE_URL = "https://movienew.cybersoft.edu.vn/api";
 export const BASE_URL = "https://movie0706.cybersoft.edu.vn/api";
 
-export const MA_NHOM = "GP03";
+export const MA_NHOM = "GP04";

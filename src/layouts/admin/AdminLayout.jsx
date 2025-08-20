@@ -65,7 +65,7 @@ const items = [
   ),
 ];
 
-export const AdminLayout = () => {
+export default function AdminLayout() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const stateUser = useSelector((state) => state.userReducer);
@@ -188,4 +188,4 @@ export const AdminLayout = () => {
       </Layout>
     </Layout>
   );
-};
+}

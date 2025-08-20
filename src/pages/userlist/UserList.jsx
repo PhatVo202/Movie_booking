@@ -27,10 +27,8 @@ export default function UserList() {
   }, []);
 
   const getUserList = async () => {
-    setLoadingState({ isLoading: true });
     const result = await getUserListApi();
     setUserList(result.data);
-    setLoadingState({ isLoading: false });
   };
 
   const handleDeleteUser = async (id) => {

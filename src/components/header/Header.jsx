@@ -2,6 +2,7 @@ import React, { Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { setUserInfoAction } from "../../store/actions/userAction";
+// import logoImg from "../../../public/img/logoImg.png";
 
 import "./styleheader.css";
 
@@ -58,9 +59,11 @@ export default function Header() {
         <nav className="navbar navbar-expand-md navbar-light ml-auto">
           <Link className="navbar-brand" to="/">
             <img
-              src="./img/logo.png"
+              src="/img/logo12.webp"
+              alt="logo"
               width={isMobile ? 150 : 240}
               height={70}
+              style={{ objectFit: "contain" }}
             />
           </Link>
           <button
@@ -77,10 +80,6 @@ export default function Header() {
           <div className="collapse navbar-collapse " id="collapsibleNavId">
             <ul className="navbar-nav mr-auto mt-2 mt-lg-0 ml-auto">
               <li className="nav-item active">
-                {/* <a className="nav-link" href="#">
-                {" "}
-                Home{" "}
-              </a> */}
                 <NavLink to="/"></NavLink>
               </li>
               <li className="nav-item ">
