@@ -2,11 +2,9 @@ import React, { lazy, Suspense } from "react";
 import { useRoutes } from "react-router-dom";
 import AuthGuard from "../guards/AuthGuard";
 import NoAuthGuard from "../guards/NoAuthGuard";
-
-const AdminGuard = lazy(() => import("../guards/AdminGuard"));
-
-const AdminLayout = lazy(() => import("layouts/admin/AdminLayout"));
-const HomeLayout = lazy(() => import("layouts/home/HomeLayout"));
+import AdminLayout from "layouts/admin/AdminLayout";
+import HomeLayout from "layouts/home/HomeLayout";
+import AdminGuard from "guards/AdminGuard";
 
 const EditFormUser = lazy(() => import("pages/editformuser/EditFormUser"));
 const UserForm = lazy(() => import("pages/use-form/UserForm"));

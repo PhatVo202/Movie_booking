@@ -15,8 +15,6 @@ export default function MovieManagement() {
   const movieList = useMovieList();
   const navigate = useNavigate();
 
-  console.log(movieList);
-
   const [keyword, setKeyWord] = useState("");
 
   const [filterData, setFilterData] = useState(null);

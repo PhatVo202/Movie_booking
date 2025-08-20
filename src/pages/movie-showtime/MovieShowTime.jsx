@@ -64,7 +64,6 @@ export default function MovieShowTime() {
 
   const handleChange = async (event) => {
     const result = await fetchInfoCumRapApi(event);
-    console.log(result);
     setCumRap(result.data.content);
   };
 

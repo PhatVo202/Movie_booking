@@ -12,7 +12,6 @@ const contentStyle = {
 
 export default function CarouselMovies() {
   const movieList = useMovieList();
-  console.log({ movieList: movieList });
 
   const renderBannerList = () => {
     return movieList.slice(4, 8).map((item, index) => {

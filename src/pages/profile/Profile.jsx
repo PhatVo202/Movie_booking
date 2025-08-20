@@ -32,7 +32,6 @@ export default function Profile() {
   const getInforTk = async () => {
     setLoadingState({ isLoading: true });
     const result = await inforTkApi(taiKhoanReducer);
-    console.log(result);
     setStateInfoTk(result.data);
     setLoadingState({ isLoading: false });
   };

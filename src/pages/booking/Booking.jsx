@@ -31,7 +31,6 @@ export default function Booking() {
 
   const getTicketDetail = async () => {
     const result = await fetchTicketDetailApi(params.id);
-    console.log(result.data);
     setTicketDetail(result.data);
   };
 
@@ -58,12 +57,9 @@ export default function Booking() {
     }
 
     setSelectedSeatList(data);
-    // console.log(selectedSeatList);
   };
 
-  useEffect(() => {
-    console.log(selectedSeatList);
-  }, [selectedSeatList]);
+  useEffect(() => {}, [selectedSeatList]);
 
   const bookTicket = async () => {
     const data = {

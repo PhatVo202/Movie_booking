@@ -7,21 +7,62 @@ import Slider from "react-slick";
 import "./styleSlick.config.css";
 
 export default function MultipleRows() {
-  const settings = {
-    className: "variale-width",
-    centerMode: true,
-    infinite: true,
-    centerPadding: "60px",
-    slidesToShow: 3,
+  // const settings = {
+  //   className: "variale-width",
+  //   centerMode: true,
+  //   infinite: true,
+  //   centerPadding: "60px",
+  //   slidesToShow: 3,
+  //   speed: 500,
+  //   rows: 1,
+  //   slidesPerRow: 2,
+  //   variableWidth: true,
+  //   responsive: [
+  //     {
+  //       breakpoint: 1024,
+  //       settings: {
+  //         slidesToShow: 3,
+  //         slidesToScroll: 3,
+  //         infinite: true,
+  //         dots: true,
+  //         rows: 1,
+  //       },
+  //     },
+  //     {
+  //       breakpoint: 991,
+  //       settings: {
+  //         slidesToShow: 2,
+  //         slidesToScroll: 2,
+  //         initialSlide: 1,
+  //         rows: 1,
+  //         slidesPerRow: 2,
+  //       },
+  //     },
+  //     {
+  //       breakpoint: 768,
+  //       settings: {
+  //         slidesToShow: 1,
+  //         slidesToScroll: 1,
+  //         initialSlide: 1,
+  //         rows: 1,
+  //         slidesPerRow: 2,
+  //       },
+  //     },
+  //   ],
+  // };
+
+  var settings = {
+    dots: true,
+    infinite: false,
     speed: 500,
-    rows: 1,
-    slidesPerRow: 2,
-    variableWidth: true,
+    slidesToShow: 5,
+    slidesToScroll: 1,
+    initialSlide: 1,
     responsive: [
       {
         breakpoint: 1024,
         settings: {
-          slidesToShow: 3,
+          slidesToShow: 5,
           slidesToScroll: 3,
           infinite: true,
           dots: true,
@@ -31,21 +72,21 @@ export default function MultipleRows() {
       {
         breakpoint: 991,
         settings: {
-          slidesToShow: 2,
+          slidesToShow: 4,
           slidesToScroll: 2,
           initialSlide: 1,
           rows: 1,
-          slidesPerRow: 2,
+          slidesPerRow: 1,
         },
       },
       {
         breakpoint: 768,
         settings: {
-          slidesToShow: 1,
+          slidesToShow: 2,
           slidesToScroll: 1,
           initialSlide: 1,
           rows: 1,
-          slidesPerRow: 2,
+          slidesPerRow: 1,
         },
       },
     ],
@@ -53,27 +94,50 @@ export default function MultipleRows() {
 
   const navigate = useNavigate();
   const movieList = useMovieList();
-  console.log({ movieList: movieList });
+
   const renderMovieList = () => {
     return movieList.map((ele, index) => {
       return (
         <div key={index} className="width__item mb-3 ">
           <Card
-            className="mt-3"
+            className="mt-3 mx-2"
             hoverable
-            style={{ height: "500px" }}
             cover={
               <img
-                style={{ height: "350px", objectFit: "cover" }}
+                style={{
+                  height: "348px",
+                  objectFit: "contain",
+                  marginTop: "20px",
+                  borderRadius: "5px",
+                }}
                 alt={ele.hinhAnh}
                 src={ele.hinhAnh}
               />
             }
           >
-            <h6 style={{ height: "40px" }}>{ele.tenPhim}</h6>
+            <span
+              style={{
+                padding: "2px 8px",
+                backgroundColor: "rgb(251, 66, 38)",
+                display: "inline-block",
+                borderRadius: "10px",
+                margin: "10px 0",
+                color: "white",
+              }}
+            >
+              C18
+            </span>
+            <h5>
+              {ele.tenPhim.length > 16
+                ? `${ele.tenPhim.slice(0, 16)}...`
+                : ele.tenPhim}
+            </h5>
+            <p>
+              {ele.moTa.length > 50 ? `${ele.moTa.slice(0, 50)}...` : ele.moTa}
+            </p>
             <Button
               onClick={() => navigate(`/movie-detail/${ele.maPhim}`)}
-              size="large"
+              size="middle"
               danger
             >
               Xem chi tiết
@@ -85,7 +149,7 @@ export default function MultipleRows() {
   };
 
   return (
-    <div className="bg-secondary">
+    <div className="bg-white">
       <Slider {...settings}>{renderMovieList()}</Slider>
     </div>
   );

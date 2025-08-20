@@ -57,8 +57,6 @@ export default function Login() {
         timer: 2000,
         showConfirmButton: false,
       });
-
-      console.log(error.response.data);
     }
   };
 

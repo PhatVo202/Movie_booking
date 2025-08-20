@@ -8,6 +8,7 @@ import { formatTime } from "utils";
 import { NavLink } from "react-router-dom";
 
 import { useMediaQuery } from "react-responsive";
+import moment from "moment/moment";
 
 const { TabPane } = Tabs;
 
@@ -15,7 +16,6 @@ const { Panel } = Collapse;
 
 export default function PavilitonCluster() {
   const [systemCluster, setSystemCluster] = useState([]);
-
   const [inforCluster, setInforCluster] = useState([]);
 
   useEffect(() => {
@@ -25,7 +25,6 @@ export default function PavilitonCluster() {
 
   const getSystemCluster = async () => {
     const result = await fetchSystemClusterApi();
-
     setSystemCluster(result.data);
   };
 
@@ -42,13 +41,15 @@ export default function PavilitonCluster() {
     overflowY: "scroll",
   };
 
-  console.log({ getSystemCluster: systemCluster });
-  console.log({ getInforCluster: inforCluster });
-
   return (
-    <div id="lichchieu" className={isMobile ? "container-md" : "container"}>
+    <div
+      id="lichchieu"
+      style={{ border: "0.5px solid gray" }}
+      className={isMobile ? "container-md" : "container-fluid my-5"}
+    >
       <div>
         <Tabs
+          type="card"
           tabPosition={isMobile ? "top" : "left"}
           defaultActiveKey="1"
           style={
@@ -82,19 +83,33 @@ export default function PavilitonCluster() {
                       >
                         <Panel
                           header={
-                            <div style={{ display: "flex" }}>
-                              <img
-                                src={item.hinhAnh}
-                                alt=""
-                                width={50}
-                                height={50}
-                              />
-                              <div className="ml-3">
-                                <p className="mb-0 text-primary">
-                                  {item.tenCumRap}
-                                </p>
-                                <p>{item.diaChi}</p>
-                              </div>
+                            <div
+                              style={{
+                                display: "flex",
+                                flexDirection: "column",
+                                justifyContent: "start",
+                                alignItems: "start",
+                              }}
+                            >
+                              <h6
+                                className="text-left "
+                                style={{
+                                  color: "#198754",
+                                  marginBottom: 0,
+                                  fontWeight: "600",
+                                }}
+                              >
+                                {item.tenCumRap}
+                              </h6>
+                              <p
+                                style={{ fontWeight: "300" }}
+                                className="mb-0 fw-lighter"
+                              >
+                                {item.diaChi}
+                              </p>
+                              <p style={{ color: "rgb(251, 66, 38)" }}>
+                                [Chi tiết]
+                              </p>
                             </div>
                           }
                           key={index}
@@ -109,14 +124,47 @@ export default function PavilitonCluster() {
                                 <Panel
                                   showArrow={false}
                                   header={
-                                    <div style={{ display: "flex" }}>
+                                    <div
+                                      style={{
+                                        display: "flex",
+                                        justifyContent: "start",
+                                        alignItems: "start",
+                                      }}
+                                    >
                                       <img
                                         src={dsPhim.hinhAnh}
                                         alt=""
                                         width={50}
                                         height={50}
                                       />
-                                      <p>{dsPhim.tenPhim}</p>
+                                      <div
+                                        className="px-2"
+                                        style={{
+                                          display: "flex",
+                                          alignItems: "start",
+                                          justifyContent: "start",
+                                        }}
+                                      >
+                                        <span
+                                          style={{
+                                            padding: "1px 7px",
+                                            backgroundColor: "rgb(251, 66, 38)",
+                                            display: "inline-block",
+                                            borderRadius: "10px",
+                                            color: "white",
+                                            marginRight: "10px",
+                                          }}
+                                        >
+                                          C18
+                                        </span>
+                                        <h6
+                                          style={{
+                                            color: "rgb(25, 135, 84)",
+                                          }}
+                                        >
+                                          {dsPhim.tenPhim}
+                                        </h6>
+                                      </div>
                                     </div>
                                   }
                                   key={index}
@@ -124,16 +172,32 @@ export default function PavilitonCluster() {
                                   {dsPhim.lstLichChieuTheoPhim?.map(
                                     (xuatChieu, index) => {
                                       return (
-                                        <Space>
-                                          <Tag color="gold" className="mb-2">
+                                        <Space className="mb-2" key={index}>
+                                          <Tag color="default" className="mb-2">
                                             <NavLink
-                                              style={{ textDecoration: "none" }}
-                                              key={index}
-                                              to={`/booking/${xuatChieu.maLichChieu}`}
+                                              style={{
+                                                textDecoration: "none",
+                                              }}
+                                              to={`/detail/${xuatChieu.maLichChieu}`}
                                             >
-                                              {formatTime(
-                                                xuatChieu.ngayChieuGioChieu
-                                              )}
+                                              <div className="p-2 fs-6">
+                                                <span className="text-success">
+                                                  {moment(
+                                                    xuatChieu.ngayChieuGioChieu
+                                                  ).format("DD/MM/YYYY")}
+                                                </span>
+                                                <span> ~ </span>
+                                                <span
+                                                  style={{
+                                                    fontSize: "17px",
+                                                    color: "rgb(251, 66, 38)",
+                                                  }}
+                                                >
+                                                  {moment(
+                                                    xuatChieu.ngayChieuGioChieu
+                                                  ).format("HH:mm")}
+                                                </span>
+                                              </div>
                                             </NavLink>
                                           </Tag>
                                         </Space>
@@ -153,38 +217,40 @@ export default function PavilitonCluster() {
                     defaultActiveKey="2
                         "
                     tabPosition="left"
+                    type="card"
                     style={{ height: "700px", overflowY: "scroll" }}
                   >
                     {systemRap.lstCumRap?.map((heThongRap, index) => {
                       return (
                         <TabPane
                           tab={
-                            <div>
-                              <div
+                            <div
+                              style={{
+                                display: "flex",
+                                flexDirection: "column",
+                                justifyContent: "start",
+                                alignItems: "start",
+                              }}
+                            >
+                              <h6
+                                className="text-left "
                                 style={{
-                                  display: "flex",
-                                  alignItems: "flex-start",
-                                  justifyContent: "space-around",
+                                  color: "#198754",
+                                  marginBottom: 0,
+                                  fontWeight: "600",
                                 }}
                               >
-                                <img
-                                  src={heThongRap.hinhAnh}
-                                  alt=""
-                                  width={50}
-                                  height={50}
-                                />
-                                <div>
-                                  <p
-                                    className="text-left "
-                                    style={{
-                                      marginBottom: 0,
-                                      fontSize: "14px",
-                                    }}
-                                  >
-                                    {heThongRap.tenCumRap}
-                                  </p>
-                                </div>
-                              </div>
+                                {heThongRap.tenCumRap}
+                              </h6>
+                              <p
+                                style={{ fontWeight: "300" }}
+                                className="mb-0 fw-lighter"
+                              >
+                                {heThongRap.diaChi}
+                              </p>
+                              <p style={{ color: "rgb(251, 66, 38)" }}>
+                                [Chi tiết]
+                              </p>
                             </div>
                           }
                           key={index}
@@ -193,38 +259,80 @@ export default function PavilitonCluster() {
                             return (
                               <div key={index}>
                                 <div className="my-2">
-                                  <div style={{ display: "flex" }}>
+                                  <div
+                                    style={{
+                                      display: "flex",
+                                      justifyContent: "start",
+                                      alignItems: "start",
+                                    }}
+                                  >
                                     <img
                                       src={dsPhim.hinhAnh}
                                       alt={dsPhim.hinhAnh}
                                       width={100}
                                       height={150}
                                     />
-                                    <h4
-                                      className="text-info ml-4"
+                                    <div
+                                      className="px-2"
                                       style={{
-                                        alignItems: "center",
                                         display: "flex",
+                                        alignItems: "start",
+                                        justifyContent: "start",
                                       }}
                                     >
-                                      {dsPhim.tenPhim}
-                                    </h4>
+                                      <span
+                                        style={{
+                                          padding: "2px 8px",
+                                          backgroundColor: "rgb(251, 66, 38)",
+                                          display: "inline-block",
+                                          borderRadius: "10px",
+                                          margin: "10px 0",
+                                          color: "white",
+                                        }}
+                                      >
+                                        C18
+                                      </span>
+                                      <h4
+                                        className="pt-2 pl-2"
+                                        style={{
+                                          color: "rgb(25, 135, 84)",
+                                        }}
+                                      >
+                                        {dsPhim.tenPhim}
+                                      </h4>
+                                    </div>
                                   </div>
                                 </div>
                                 <div>
                                   {dsPhim.lstLichChieuTheoPhim.map(
                                     (xuatChieu, index) => {
                                       return (
-                                        <Space>
-                                          <Tag color="gold" className="mb-2">
+                                        <Space className="mb-2" key={index}>
+                                          <Tag color="default" className="mb-2">
                                             <NavLink
-                                              style={{ textDecoration: "none" }}
-                                              key={index}
-                                              to={`/booking/${xuatChieu.maLichChieu}`}
+                                              style={{
+                                                textDecoration: "none",
+                                              }}
+                                              to={`/detail/${xuatChieu.maLichChieu}`}
                                             >
-                                              {formatTime(
-                                                xuatChieu.ngayChieuGioChieu
-                                              )}
+                                              <div className="p-2 fs-6">
+                                                <span className="text-success">
+                                                  {moment(
+                                                    xuatChieu.ngayChieuGioChieu
+                                                  ).format("DD/MM/YYYY")}
+                                                </span>
+                                                <span> ~ </span>
+                                                <span
+                                                  style={{
+                                                    fontSize: "17px",
+                                                    color: "rgb(251, 66, 38)",
+                                                  }}
+                                                >
+                                                  {moment(
+                                                    xuatChieu.ngayChieuGioChieu
+                                                  ).format("HH:mm")}
+                                                </span>
+                                              </div>
                                             </NavLink>
                                           </Tag>
                                         </Space>
