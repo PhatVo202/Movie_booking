@@ -39,7 +39,7 @@ export default function EditFormUser() {
 
   const getListTypeUser = async () => {
     const result = await fetchListTypeUserApi();
-    setTypeUser(result.data.content);
+    setTypeUser(result.data);
   };
 
   const renderMaLoaiNguoiDung = () => {
@@ -89,9 +89,10 @@ export default function EditFormUser() {
       });
       navigate("/admin/userlist");
     } catch (error) {
-      notification.error({
-        message: error.response.data.content,
-      });
+      console.log(error.response);
+      // notification.error({
+      //   message: error.response.data,
+      // });
     }
   };
 
@@ -103,7 +104,7 @@ export default function EditFormUser() {
         taiKhoan: hookStateUser.taiKhoan,
         email: hookStateUser.email,
         maLoaiNguoiDung: hookStateUser.maLoaiNguoiDung,
-        soDt: hookStateUser.soDT,
+        soDt: hookStateUser.soDt,
         maNhom: MA_NHOM,
       });
     }

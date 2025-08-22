@@ -44,8 +44,11 @@ export const getUserListApi = () => {
 
 export const searchUserListApi = (tuKhoa) => {
   return axiosRequest({
-    url: `/QuanLyNguoiDung/LayDanhSachNguoiDung?MaNhom=${MA_NHOM}&tuKhoa=${tuKhoa}`,
+    url: `/QuanLyNguoiDung/LayDanhSachNguoiDung?MaNhom=${MA_NHOM}`,
     method: "GET",
+    params: {
+      ...(tuKhoa && { tuKhoa: tuKhoa }),
+    },
   });
 };
 
@@ -67,7 +70,7 @@ export const addUserApi = (data) => {
 export const updateUserApi = (data) => {
   return axiosRequest({
     url: `/QuanLyNguoiDung/CapNhatThongTinNguoiDung`,
-    method: "POST",
+    method: "PUT",
     data: data,
   });
 };

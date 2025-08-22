@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { Space, Tag, Table, Button, Input, notification } from "antd";
 import {
   deleteUserApi,
@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setUserListAction } from "store/actions/userListAction";
 import Swal from "sweetalert2";
+import { debounce } from "lodash";
 
 export default function UserList() {
   const navigate = useNavigate();
@@ -112,10 +113,28 @@ export default function UserList() {
     },
   ];
 
-  const handleSearch = async () => {
-    const dataKey = await searchUserListApi(keyword);
-    setFilterData(dataKey.data.content);
-  };
+  // const handleSearch = async () => {
+  //   const dataKey = await searchUserListApi(keyword);
+  //   setFilterData(dataKey.data);
+  // };
+  const handleSearch = useCallback(
+    debounce(async (query) => {
+      if (!query) {
+        setFilterData(null);
+        return;
+      }
+      try {
+        // setLoading(true);
+        const dataKey = await searchUserListApi(query);
+        setFilterData(dataKey.data);
+      } catch (error) {
+        notification.error({
+          message: "Tìm kiếm thất bại",
+        });
+      }
+    }, 500),
+    []
+  );
 
   return (
     <div>
@@ -134,8 +153,7 @@ export default function UserList() {
           placeholder="Search here"
           enterButton
           className="mb-3"
-          onSearch={handleSearch}
-          onChange={(event) => setKeyWord(event.target.value)}
+          onChange={(event) => handleSearch(event.target.value)}
         />
         <Table
           columns={columns}

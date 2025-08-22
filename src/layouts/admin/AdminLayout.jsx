@@ -1,4 +1,4 @@
-import { NavLink, Outlet, useNavigate } from "react-router-dom";
+import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 import {
   FileOutlined,
   PieChartOutlined,
@@ -70,6 +70,9 @@ export default function AdminLayout() {
   const dispatch = useDispatch();
   const stateUser = useSelector((state) => state.userReducer);
   const [collapsed, setCollapsed] = useState(false);
+  const location = useLocation();
+
+  console.log({ location: location.pathname });
 
   const {
     token: { colorBgContainer },
@@ -91,13 +94,7 @@ export default function AdminLayout() {
         collapsed={collapsed}
         onCollapse={(value) => setCollapsed(value)}
       >
-        <div
-          style={{
-            height: 32,
-            margin: 16,
-            background: "rgba(255, 255, 255, 0.2)",
-          }}
-        />
+        <img src="/img/logo12.webp" alt="logo" width="100%" />
         <Menu
           theme="dark"
           defaultSelectedKeys={["1"]}
@@ -164,8 +161,8 @@ export default function AdminLayout() {
               margin: "16px 0",
             }}
           >
-            <Breadcrumb.Item>Films</Breadcrumb.Item>
-            <Breadcrumb.Item>Addnew</Breadcrumb.Item>
+            <Breadcrumb.Item>{location.pathname.slice(1, 6)}</Breadcrumb.Item>
+            <Breadcrumb.Item>{location.pathname.slice(7)}</Breadcrumb.Item>
           </Breadcrumb>
 
           <div

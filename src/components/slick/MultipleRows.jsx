@@ -57,7 +57,7 @@ export default function MultipleRows() {
     speed: 500,
     slidesToShow: 5,
     slidesToScroll: 1,
-    initialSlide: 1,
+    initialSlide: 2,
     responsive: [
       {
         breakpoint: 1024,

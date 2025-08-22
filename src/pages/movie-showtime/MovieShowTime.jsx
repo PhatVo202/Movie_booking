@@ -22,6 +22,7 @@ export default function MovieShowTime() {
   const [state, setState] = useState({});
   const [heThongRap, setHeThongRap] = useState([]);
   const [cumRap, setCumRap] = useState([]);
+  const [maRap, setMaRap] = useState("");
   const [componentSize, setComponentSize] = useState("default");
   const onFormLayoutChange = ({ size }) => {
     setComponentSize(size);
@@ -34,12 +35,13 @@ export default function MovieShowTime() {
 
   const getMovieDetails = async () => {
     const result = await fetchMovieDetailApi(params.id);
-    setState(result.data.content);
+    console.log({ result: result });
+    setState(result.data);
   };
 
   const getInforCluster = async () => {
     const result = await fetchInfoRapApi();
-    setHeThongRap(result.data.content);
+    setHeThongRap(result.data);
   };
 
   const renderHeThongRap = () => {
@@ -51,12 +53,26 @@ export default function MovieShowTime() {
       );
     });
   };
+  console.log({ maRapNe: maRap });
 
   const renderCumRap = () => {
     return cumRap.map((item, index) => {
       return (
         <Select.Option key={index} value={item.maCumRap}>
-          {item.maCumRap}
+          <p className="text-danger">{item.maCumRap}</p>
+          {item.danhSachRap.map((ele) => {
+            return (
+              <p
+                onClick={() => {
+                  setMaRap(ele.maRap);
+                  console.log(`${ele.maRap}-${ele.tenRap}`);
+                }}
+                key={ele.maRap}
+              >
+                {ele.tenRap}
+              </p>
+            );
+          })}
         </Select.Option>
       );
     });
@@ -64,18 +80,23 @@ export default function MovieShowTime() {
 
   const handleChange = async (event) => {
     const result = await fetchInfoCumRapApi(event);
-    setCumRap(result.data.content);
+    setCumRap(result.data);
+  };
+
+  const handleChangeCumRap = (event) => {
+    console.log(event);
   };
 
   const handleFinish = async (values) => {
     values.ngayChieuGioChieu = values.ngayChieuGioChieu.format(
       "DD/MM/YYYY hh:mm:ss"
     );
+    console.log(values);
 
     const data = {
       maPhim: params.id,
       ngayChieuGioChieu: values.ngayChieuGioChieu,
-      maRap: values.maRap,
+      maRap: maRap,
       giaVe: values.giaVe,
     };
 
@@ -91,7 +112,7 @@ export default function MovieShowTime() {
       navigate("/admin/films");
     } catch (error) {
       notification.error({
-        message: error.response.data.content,
+        message: error.response.data,
       });
     }
   };
@@ -145,8 +166,10 @@ export default function MovieShowTime() {
               {renderHeThongRap()}
             </Select>
           </Form.Item>
-          <Form.Item label="Cụm rạp" name="maRap">
-            <Select>{renderCumRap()}</Select>
+          <Form.Item label="Cụm rạp" name="cumRap">
+            <Select onChange={(event) => handleChangeCumRap(event)}>
+              {renderCumRap()}
+            </Select>
           </Form.Item>
           <Form.Item label="Ngày chiếu" name="ngayChieuGioChieu" {...config}>
             <DatePicker

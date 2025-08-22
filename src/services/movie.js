@@ -1,10 +1,13 @@
 import { MA_NHOM } from "constants";
 import { axiosRequest } from "../configs/axios.config";
 
-export const fetchMovieListApi = () => {
+export const fetchMovieListApi = (tenphim) => {
   return axiosRequest({
     url: `/QuanLyPhim/LayDanhSachPhim?maNhom=${MA_NHOM}`,
     method: "GET",
+    params: {
+      ...(tenphim && { tenPhim: tenphim }),
+    },
   });
 };
 

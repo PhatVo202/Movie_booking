@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { useMovieList } from "../../hooks/useMovieList";
 
 import { Button, notification, Space, Table, Input } from "antd";
@@ -9,7 +9,8 @@ import {
   CalendarOutlined,
 } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
-import { deleteMovieApi } from "services/movie";
+import { deleteMovieApi, fetchMovieListApi } from "services/movie";
+import { debounce } from "lodash";
 
 export default function MovieManagement() {
   const movieList = useMovieList();
@@ -89,13 +90,31 @@ export default function MovieManagement() {
     },
   ];
 
-  const handleSearch = () => {
-    let filterTable = movieList.filter((item) => {
-      return item.tenPhim.toLowerCase().indexOf(keyword.toLowerCase()) !== -1;
-    });
+  // const handleSearch = () => {
+  //   let filterTable = movieList.filter((item) => {
+  //     return item.tenPhim.toLowerCase().indexOf(keyword.toLowerCase()) !== -1;
+  //   });
 
-    setFilterData(filterTable);
-  };
+  //   setFilterData(filterTable);
+  // };
+
+  const handleSearch = useCallback(
+    debounce(async (query) => {
+      if (!query) {
+        setFilterData(null);
+        return;
+      }
+      try {
+        const dataKey = await fetchMovieListApi(query);
+        setFilterData(dataKey.data);
+      } catch (error) {
+        notification.error({
+          message: "Tìm kiếm thất bại",
+        });
+      }
+    }, 500),
+    []
+  );
 
   return (
     <div>
@@ -111,8 +130,8 @@ export default function MovieManagement() {
         <Input.Search
           placeholder="Search here"
           enterButton
-          onSearch={handleSearch}
-          onChange={(event) => setKeyWord(event.target.value)}
+          // onSearch={handleSearch}
+          onChange={(event) => handleSearch(event.target.value)}
         />
         <Table
           columns={columns}

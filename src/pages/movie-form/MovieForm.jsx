@@ -9,6 +9,7 @@ import {
   Radio,
   Switch,
   notification,
+  Skeleton,
 } from "antd";
 import { addMovieApi, editMovieApi, fetchMovieDetailApi } from "services/movie";
 import { MA_NHOM } from "constants";
@@ -22,11 +23,8 @@ export default function MovieForm() {
   const [form] = useForm();
   const [file, setFile] = useState("");
   const [imgPreview, setImgPreview] = useState("");
-  const [componentSize, setComponentSize] = useState("default");
 
-  const onFormLayoutChange = ({ size }) => {
-    setComponentSize(size);
-  };
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (params.id) {
@@ -35,19 +33,24 @@ export default function MovieForm() {
   }, [params.id]);
 
   const getMovieDetails = async () => {
-    const result = await fetchMovieDetailApi(params.id);
+    try {
+      setIsLoading(true);
+      const result = await fetchMovieDetailApi(params.id);
 
-    form.setFieldsValue({
-      tenPhim: result.data.content.tenPhim,
-      trailer: result.data.content.trailer,
-      moTa: result.data.content.moTa,
-      sapChieu: result.data.content.sapChieu,
-      dangChieu: result.data.content.dangChieu,
-      danhGia: result.data.content.danhGia,
-      ngayKhoiChieu: moment(result.data.content.ngayKhoiChieu),
-    });
+      form.setFieldsValue({
+        tenPhim: result.data.tenPhim,
+        trailer: result.data.trailer,
+        moTa: result.data.moTa,
+        // sapChieu: result.data.sapChieu,
+        // dangChieu: result.data.dangChieu,
+        danhGia: result.data.danhGia,
+        ngayKhoiChieu: moment(result.data.ngayKhoiChieu),
+      });
 
-    setImgPreview(result.data.content.hinhAnh);
+      setImgPreview(result.data.hinhAnh);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleFinish = async (values) => {
@@ -60,8 +63,8 @@ export default function MovieForm() {
     formData.append("trailer", values.trailer);
     formData.append("moTa", values.moTa);
     formData.append("ngayKhoiChieu", values.ngayKhoiChieu);
-    formData.append("sapChieu", values.sapChieu);
-    formData.append("dangChieu", values.dangChieu);
+    // formData.append("sapChieu", values.sapChieu);
+    // formData.append("dangChieu", values.dangChieu);
     formData.append("hot", values.hot);
     formData.append("danhGia", values.danhGia);
     file && formData.append("File", file, file.name);
@@ -90,7 +93,10 @@ export default function MovieForm() {
       setImgPreview(event.target.result);
     };
   };
-  return (
+
+  return isLoading ? (
+    <Skeleton active />
+  ) : (
     <Form
       labelCol={{
         span: 4,
@@ -100,32 +106,24 @@ export default function MovieForm() {
       }}
       layout="horizontal"
       initialValues={{
-        size: componentSize,
+        size: "large",
         tenPhim: "",
         trailer: "",
         moTa: "",
-        maNhom: "GP03",
+        maNhom: MA_NHOM,
         ngayKhoiChieu: "",
-        sapChieu: true,
-        dangChieu: true,
+        // sapChieu: true,
+        // dangChieu: true,
         hot: true,
         danhGia: 10,
       }}
       form={form}
       onFinish={handleFinish}
-      onValuesChange={onFormLayoutChange}
-      size={componentSize}
+      size="large"
       style={{
         maxWidth: 600,
       }}
     >
-      <Form.Item label="Form Size" name="size">
-        <Radio.Group>
-          <Radio.Button value="small">Small</Radio.Button>
-          <Radio.Button value="default">Default</Radio.Button>
-          <Radio.Button value="large">Large</Radio.Button>
-        </Radio.Group>
-      </Form.Item>
       <Form.Item
         label="Tên phim"
         name="tenPhim"
@@ -142,25 +140,32 @@ export default function MovieForm() {
       <Form.Item label="Ngày khởi chiếu" name="ngayKhoiChieu">
         <DatePicker />
       </Form.Item>
-      <Form.Item label="Đang chiếu" valuePropName="checked" name="dangChieu">
+      {/* <Form.Item label="Đang chiếu" valuePropName="checked" name="dangChieu">
         <Switch />
-      </Form.Item>
-      <Form.Item label="Sắp chiếu" valuePropName="checked" name="sapChieu">
+      </Form.Item> */}
+      {/* <Form.Item label="Sắp chiếu" valuePropName="checked" name="sapChieu">
         <Switch />
-      </Form.Item>
+      </Form.Item> */}
+
       <Form.Item label="Hot" valuePropName="checked" name="hot">
         <Switch />
       </Form.Item>
+
       <Form.Item label="Số sao" name="danhGia">
         <InputNumber />
       </Form.Item>
+
       <Form.Item label="Hình ảnh" onChange={handleFile}>
         <Input className="mb-3" type="file" />
         <Image src={imgPreview} width={120} height={140} />
       </Form.Item>
 
       <Form.Item label="Tác vụ">
-        <Button htmlType="submit">Thêm phim</Button>
+        {params.id ? (
+          <Button htmlType="submit">Sửa phim</Button>
+        ) : (
+          <Button htmlType="submit">Thêm phim</Button>
+        )}
       </Form.Item>
     </Form>
   );

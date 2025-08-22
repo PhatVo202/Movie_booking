@@ -30,14 +30,14 @@ export default function UserForm() {
 
   const Swal = require("sweetalert2");
 
+  const getListTypeUser = async () => {
+    const result = await fetchListTypeUserApi();
+    setTypeUser(result.data);
+  };
+
   useEffect(() => {
     getListTypeUser();
   }, []);
-
-  const getListTypeUser = async () => {
-    const result = await fetchListTypeUserApi();
-    setTypeUser(result.data.content);
-  };
 
   const renderMaLoaiNguoiDung = () => {
     return typeUser.map((item, index) => {
