@@ -10,7 +10,12 @@ import { UserOutlined, SettingOutlined } from "@ant-design/icons";
 import { Avatar, Space, Button, Dropdown } from "antd";
 import { useMediaQuery } from "react-responsive";
 
-export default function Header() {
+export default function Header({
+  scrollIntoShowTimesRef,
+  scrollIntoCinemasRef,
+  scrollIntoNewsRef,
+  scrollIntoAppRef,
+}) {
   const userState = useSelector((state) => state.userReducer);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -57,7 +62,11 @@ export default function Header() {
     <div className="header__content">
       <div className="container-xl bg-rg">
         <nav className="navbar navbar-expand-md navbar-light ml-auto">
-          <Link className="navbar-brand" to="/">
+          <Link
+            className="navbar-brand"
+            to="/"
+            onClick={() => window.scrollTo(0, 0)}
+          >
             <img
               src="/img/logo12.webp"
               alt="logo"
@@ -83,24 +92,49 @@ export default function Header() {
                 <NavLink to="/"></NavLink>
               </li>
               <li className="nav-item ">
-                <NavLink to="/" className="nav-link">
+                <NavLink
+                  onClick={() => window.scrollTo(0, 0)}
+                  to="/"
+                  className="nav-link"
+                >
                   Trang chủ
                 </NavLink>
               </li>
               <li className="nav-item ">
-                <NavLink to="#lichchieu" className="nav-link">
+                <a
+                  onClick={(e) => {
+                    e.preventDefault();
+                    scrollIntoShowTimesRef && scrollIntoShowTimesRef();
+                  }}
+                  href="#lichchieu"
+                  className="nav-link"
+                >
                   Lịch chiếu
-                </NavLink>
+                </a>
               </li>
               <li className="nav-item ">
-                <NavLink to="/" className="nav-link">
+                <a
+                  onClick={(e) => {
+                    e.preventDefault();
+                    scrollIntoCinemasRef && scrollIntoCinemasRef();
+                  }}
+                  href="#cumrap"
+                  className="nav-link"
+                >
                   Cụm rạp
-                </NavLink>
+                </a>
               </li>
               <li className="nav-item ">
-                <NavLink to="/" className="nav-link">
+                <a
+                  onClick={(e) => {
+                    e.preventDefault();
+                    scrollIntoNewsRef && scrollIntoNewsRef();
+                  }}
+                  href="#tin-tuc"
+                  className="nav-link"
+                >
                   Tin tức
-                </NavLink>
+                </a>
               </li>
             </ul>
             <div>

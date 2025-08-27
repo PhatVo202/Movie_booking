@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from "react";
 import { useMovieList } from "../../hooks/useMovieList";
 
-import { Button, notification, Space, Table, Input } from "antd";
+import { Button, notification, Space, Table, Input, Tooltip } from "antd";
 
 import {
   EditOutlined,
@@ -31,7 +31,15 @@ export default function MovieManagement() {
       title: "Hình ảnh",
       dataIndex: "hinhAnh",
       key: "2",
-      render: (text) => <img src={text} alt="" width={50} height={50} />,
+      render: (text) => (
+        <img
+          src={text}
+          alt=""
+          width={100}
+          height={100}
+          style={{ objectFit: "cover", borderRadius: "10px" }}
+        />
+      ),
     },
     {
       title: "Tên phim",
@@ -49,54 +57,59 @@ export default function MovieManagement() {
       render: (text) => {
         return (
           <div className="d-flex">
-            <Button
-              onClick={() => navigate(`/admin/films/edit/${text.maPhim}`)}
-              size="small"
-            >
-              <Space>
-                <EditOutlined />
-              </Space>
-            </Button>
-            <Button
-              onClick={async () => {
-                try {
-                  await deleteMovieApi(text.maPhim);
-                  notification.success({
-                    message: "Xoá phim thành công",
-                  });
-                } catch (error) {
-                  notification.error({
-                    message: error.response.data.content,
-                  });
-                }
-              }}
-              size="small"
-            >
-              <Space>
-                <DeleteOutlined />
-              </Space>
-            </Button>
-            <Button
-              onClick={() => navigate(`/admin/films/showtime/${text.maPhim}`)}
-              size="small"
-            >
-              <Space>
-                <CalendarOutlined />
-              </Space>
-            </Button>
+            <Tooltip placement="topRight" title="Chỉnh sửa">
+              <Button
+                onClick={() => navigate(`/admin/films/edit/${text.maPhim}`)}
+                size="middle"
+                type="primary"
+              >
+                <Space>
+                  <EditOutlined />
+                </Space>
+              </Button>
+            </Tooltip>
+
+            <Tooltip placement="topRight" title="Xoá">
+              <Button
+                className="mx-2"
+                onClick={async () => {
+                  try {
+                    await deleteMovieApi(text.maPhim);
+                    notification.success({
+                      message: "Xoá phim thành công",
+                    });
+                  } catch (error) {
+                    notification.error({
+                      message: error.response.data.content,
+                    });
+                  }
+                }}
+                size="middle"
+                type="primary"
+                danger
+              >
+                <Space>
+                  <DeleteOutlined />
+                </Space>
+              </Button>
+            </Tooltip>
+
+            <Tooltip placement="topRight" title="Tạo lịch chiếu">
+              <Button
+                onClick={() => navigate(`/admin/films/showtime/${text.maPhim}`)}
+                size="middle"
+                danger
+              >
+                <Space>
+                  <CalendarOutlined />
+                </Space>
+              </Button>
+            </Tooltip>
           </div>
         );
       },
     },
   ];
-
-  // const handleSearch = () => {
-  //   let filterTable = movieList.filter((item) => {
-  //     return item.tenPhim.toLowerCase().indexOf(keyword.toLowerCase()) !== -1;
-  //   });
-
-  //   setFilterData(filterTable);
-  // };
 
   const handleSearch = useCallback(
     debounce(async (query) => {

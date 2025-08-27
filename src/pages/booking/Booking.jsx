@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { bookTicketApi, fetchTicketDetailApi } from "../../services/ticket";
-import { Button } from "antd";
+import { Button, message, notification } from "antd";
 import Seat from "./components/Seat";
 import * as _ from "lodash";
 import { useMediaQuery } from "react-responsive";
@@ -16,10 +16,11 @@ import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
+import { useSelector } from "react-redux";
 
 export default function Booking() {
   const navigate = useNavigate();
-
+  const userInfo = useSelector((state) => state.userReducer.userInfo);
   const [ticketDetail, setTicketDetail] = useState({});
   const [selectedSeatList, setSelectedSeatList] = useState([]);
 
@@ -62,26 +63,38 @@ export default function Booking() {
   useEffect(() => {}, [selectedSeatList]);
 
   const bookTicket = async () => {
-    const data = {
-      maLichChieu: params.id,
-      danhSachVe: selectedSeatList.map((ele) => {
-        return {
-          maGhe: ele.maGhe,
-          giaVe: ele.giaVe,
-        };
-      }),
-    };
+    try {
+      const data = {
+        taiKhoanNguoiDung: userInfo.taiKhoan,
+        maLichChieu: params.id,
+        danhSachVe: selectedSeatList.map((ele) => {
+          return {
+            maGhe: ele.maGhe,
+            giaVe: ele.giaVe,
+          };
+        }),
+      };
 
-    await bookTicketApi(data);
-    Swal.fire({
-      title: "Đặt vé thành công!",
-      text: "Hoàn tất!!",
-      icon: "success",
-      timer: 2000,
-      showConfirmButton: false,
-    });
+      if (data.danhSachVe.length === 0) {
+        message.warning({
+          content: "Vui lòng chọn ghế",
+        });
+        return;
+      }
 
-    navigate("/");
+      await bookTicketApi(data);
+      Swal.fire({
+        title: "Đặt vé thành công!",
+        text: "Hoàn tất!!",
+        icon: "success",
+        timer: 2000,
+        showConfirmButton: false,
+      });
+
+      navigate("/");
+    } catch (error) {
+      notification.error(error.response.data);
+    }
   };
 
   const isTablet = useMediaQuery({ query: `(min-width: 768px)` });
@@ -234,7 +247,7 @@ export default function Booking() {
                   placeItems: "center",
                 }}
               >
-                <div>{renderSeats()}</div>
+                <div className="">{renderSeats()}</div>
               </div>
             </div>
             {isTablet && (

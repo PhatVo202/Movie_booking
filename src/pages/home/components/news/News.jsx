@@ -5,7 +5,14 @@ import { useNavigate } from "react-router-dom";
 export default function News() {
   const navigate = useNavigate();
   return (
-    <div style={{ backgroundImage: "url(./img/imgbgdidong.jpeg)" }}>
+    <div
+      style={{
+        backgroundImage: "url(./img/imgbgdidong.jpeg)",
+        backgroundPosition: "center",
+        backgroundAttachment: "fixed",
+        backgroundSize: "cover",
+      }}
+    >
       <div className="container py-5">
         <div className="row ">
           <div className="col-12 col-lg-5 col-xl-5 ">
@@ -30,8 +37,8 @@ export default function News() {
               <h1>
                 Nội dung đặc sắc trải nghiệm mượt mà trên thiết bị di động
               </h1>
-              <p className="text-secondary">Trải nghiệm sự tiện lợi</p>
-              <p className="text-secondary">
+              <p className="text-light">Trải nghiệm sự tiện lợi</p>
+              <p className="text-light">
                 Hãy đăng ký ngay để có những suất chiếu phù hợp nhất
               </p>
               <Button

@@ -45,7 +45,7 @@ export default function PavilitonCluster() {
     <div
       id="lichchieu"
       style={{ border: "0.5px solid gray" }}
-      className={isMobile ? "container-md" : "container-fluid my-5"}
+      className={isMobile ? "container-md" : "container my-5"}
     >
       <div>
         <Tabs
@@ -313,7 +313,7 @@ export default function PavilitonCluster() {
                                               style={{
                                                 textDecoration: "none",
                                               }}
-                                              to={`/detail/${xuatChieu.maLichChieu}`}
+                                              to={`/booking/${xuatChieu.maLichChieu}`}
                                             >
                                               <div className="p-2 fs-6">
                                                 <span className="text-success">

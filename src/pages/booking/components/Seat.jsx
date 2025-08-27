@@ -21,7 +21,7 @@ export default function Seat(props) {
       return "btn-warning";
     }
 
-    return "btn-dark"; // mặc định ko có gì hết thì return như này
+    return "btn-secondary"; // mặc định ko có gì hết thì return như này
   };
 
   // ddang đặt
@@ -37,15 +37,16 @@ export default function Seat(props) {
       onClick={handleSelectSeat}
       disabled={props.ele.daDat} // disable ko click đc
       style={{
-        width: 30,
-        height: 30,
+        width: 36,
+        height: 36,
         padding: 0,
         borderRadius: "7px",
         position: "relative",
+        cursor: props.ele.daDat ? "not-allowed" : "pointer",
       }}
-      className={`mr-1 mb-1 btn ${populateClassName()}`}
+      className={`m-2  btn ${populateClassName()}`}
     >
-      {props.ele.tenGhe}
+      <span>{props.ele.tenGhe}</span>
     </button>
   );
 }

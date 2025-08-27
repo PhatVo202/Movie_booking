@@ -6,7 +6,7 @@ import { useMovieList } from "hooks/useMovieList";
 
 const contentStyle = {
   width: "100%",
-  height: "665px",
+  height: "100vh",
   objectFit: "contain",
 };
 

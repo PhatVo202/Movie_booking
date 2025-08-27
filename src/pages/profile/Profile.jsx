@@ -7,6 +7,7 @@ import { formatDate } from "utils";
 import Swal from "sweetalert2";
 import { LoadingContext } from "contexts/loading/LoadingContext";
 import { useSelector } from "react-redux";
+import moment from "moment";
 
 export default function Profile() {
   const formRef = useRef(null);
@@ -36,8 +37,70 @@ export default function Profile() {
     setLoadingState({ isLoading: false });
   };
 
+  console.log({ thongtinVe: stateInfoTk.thongTinDatVe });
+  const data = Array.isArray(stateInfoTk.thongTinDatVe)
+    ? stateInfoTk.thongTinDatVe
+    : [];
+
+  const groupedData = data.reduce((acc, ve) => {
+    // lấy ngày (bỏ giờ nếu chỉ quan tâm ngày)
+    const dateOnly = ve.ngayDat.split("T")[0];
+    const key = `${ve.tenPhim}_${dateOnly}`;
+
+    let group = acc.find((item) => item.key === key);
+
+    if (group) {
+      group.maVe.push(ve.maVe);
+      group.danhSachGhe.push(...ve.danhSachGhe);
+    } else {
+      acc.push({
+        key,
+        tenPhim: ve.tenPhim,
+        ngayDat: dateOnly,
+        thoiLuongPhim: ve.thoiLuongPhim,
+        maVe: [ve.maVe],
+        danhSachGhe: [...ve.danhSachGhe],
+      });
+    }
+
+    return acc;
+  }, []);
+
+  console.log({ groupedData: groupedData });
+
   const renderContentTable = () => {
-    return stateInfoTk.thongTinDatVe?.map((item, index) => {
+    // return groupedData.map((item, index) => {
+    //   // console.log({ dataProfile: item });
+    //   return (
+    //     <tr
+    //       key={index}
+    //       className={(index + 1) % 2 === 0 ? "bg-light" : undefined}
+    //     >
+    //       <td>{index + 1}</td>
+    //       <td>{item.tenPhim}</td>
+    //       <td>{item.thoiLuongPhim}</td>
+    //       <td>
+    //         {item.danhSachGhe?.map((dsGhe, index) => {
+    //           return <span key={index}>{dsGhe.tenCumRap},</span>;
+    //         })}
+    //       </td>
+
+    //       <td>{formatDate(item.ngayDat)}</td>
+    //       <td>{item.maVe}</td>
+    //       <td>
+    //         {item.danhSachGhe?.map((dsGhe, index) => {
+    //           return <span key={index}>{dsGhe.tenGhe},</span>;
+    //         })}
+    //       </td>
+
+    //       <td>{item.giaVe} vnd</td>
+    //       {/* <td>{item.giaVe.toLocaleString()} vnd</td> */}
+    //     </tr>
+    //   );
+    // });
+
+    return stateInfoTk?.thongTinDatVe?.map((item, index) => {
+      // console.log({ dataProfile: item });
       return (
         <tr
           key={index}
@@ -45,22 +108,25 @@ export default function Profile() {
         >
           <td>{index + 1}</td>
           <td>{item.tenPhim}</td>
-          <td>{item.thoiLuongPhim}</td>
+          <td>{item.thoiLuongPhim} phút</td>
           <td>
             {item.danhSachGhe?.map((dsGhe, index) => {
-              return <span key={index}>{dsGhe.tenCumRap},</span>;
+              return <span key={index}>{dsGhe.tenCumRap}</span>;
             })}
           </td>
 
-          <td>{formatDate(item.ngayDat)}</td>
+          <td>{`${moment(item.ngayDat).format("DD/MM/YYYY")} ~ ${moment(
+            item.ngayDat
+          ).format("hh:mm A")} `}</td>
           <td>{item.maVe}</td>
           <td>
             {item.danhSachGhe?.map((dsGhe, index) => {
-              return <span key={index}>{dsGhe.tenGhe},</span>;
+              return <span key={index}>{dsGhe.tenGhe}</span>;
             })}
           </td>
 
           <td>{item.giaVe.toLocaleString()} vnd</td>
+          {/* <td>{item.giaVe.toLocaleString()} vnd</td> */}
         </tr>
       );
     });
@@ -209,7 +275,7 @@ export default function Profile() {
                         <th>Tên rạp</th>
                         <th>Ngày đặt</th>
                         <th>Mã vé</th>
-                        <th>Tên ghế</th>
+                        <th>Ghế</th>
                         <th>Tổng tiền</th>
                       </tr>
                     </thead>

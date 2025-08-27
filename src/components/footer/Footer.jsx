@@ -10,6 +10,8 @@ import {
 
 import "./stylefooter.css";
 
+// import footerLogo2 from "../../../public/img/certificate.png";
+
 export default function Footer() {
   return (
     <footer className="py-5" style={{ backgroundColor: "#111111" }}>
@@ -37,7 +39,6 @@ export default function Footer() {
                 Địa chỉ: 59 Xa Lộ Hà Nội, Phường Thảo Điền, Thành Phố Thủ Đức,
                 Thành Phố Hồ Chí Minh, Việt Nam.
               </span>
-              <span> Mã số doanh nghiệp: 0106539659.</span>
               <span>
                 Ngày cấp mã số doanh nghiệp: 15/5/2014. Nơi cấp: Sở kế hoạch và
                 đầu tư thành phố Hà Nội.

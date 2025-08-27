@@ -65,6 +65,11 @@ export default function UserList() {
       title: "Loại người dùng",
       key: "3",
       dataIndex: "maLoaiNguoiDung",
+      render: (tags) => (
+        <Tag color={tags === "QuanTri" ? "volcano" : "geekblue"}>
+          {tags === "QuanTri" ? "Quản trị" : "Khách hàng"}
+        </Tag>
+      ),
     },
     {
       title: "Email",
@@ -79,7 +84,7 @@ export default function UserList() {
     {
       title: "Sdt",
       key: "6",
-      dataIndex: "soDT",
+      dataIndex: "soDt",
     },
     {
       title: "Thao tác",
@@ -92,7 +97,9 @@ export default function UserList() {
                 dispatch(setUserListAction(text));
                 navigate("/admin/edituser");
               }}
-              size="small"
+              size="middle"
+              type="primary"
+              className="mr-2"
             >
               <Space>
                 <EditOutlined />
@@ -101,7 +108,9 @@ export default function UserList() {
 
             <Button
               onClick={() => handleDeleteUser(text.taiKhoan)}
-              size="small"
+              size="middle"
+              type="primary"
+              danger
             >
               <Space>
                 <DeleteOutlined />
